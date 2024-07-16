@@ -15,15 +15,14 @@ module.exports = () => {
       path: path.resolve(__dirname, 'dist'),
     },
     plugins: [
+      // Webpack plugin that generates our html file and injects our bundles. 
       new HtmlWebpackPlugin({
-        template: './client/index.html',
-        filename: 'index.html',
-        chunks: ['main'],
+        template: './index.html',
+        title: 'Home'
       }),
-      new HtmlWebpackPlugin({
-        template: './client/index.html',
-        filename: 'install.html',
-        chunks: ['install'],
+      new InjectManifest({
+        swSrc: './src-sw.js',
+        swDest: 'src-sw.js',
       }),
       new WebpackPwaManifest({
         name: 'J.A.T.E',
@@ -31,19 +30,17 @@ module.exports = () => {
         description: 'Just Another Text Editor',
         background_color: '#272822',
         theme_color: '#31a9e1',
-        crossorigin: 'use-credentials',
+        start_url: './',
+        publicPath: './',
         icons: [
           {
-            src: path.resolve('./client/assets/icons/icon_96x96.png'),
+            src: path.resolve('src/images/logo.png'),
             sizes: [96, 128, 192, 256, 384, 512],
             destination: path.join('assets', 'icons'),
           },
         ],
       }),
-      new InjectManifest({
-        swSrc: './client/src-sw.js',
-        swDest: 'src-sw.js',
-      }),
+
     ],
 
     module: {
